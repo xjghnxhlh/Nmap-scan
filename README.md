@@ -1,127 +1,133 @@
-# 🔍 Nmap & Tests de Vulnérabilités — Tutoriel VPS (Usage légal uniquement)
+# 🔍 Nmap & Tests de vulnérabilités — Tutoriel VPS
 
-Ce dépôt contient un guide complet pour installer Nmap sur un VPS Linux,
-et effectuer des tests de vulnérabilités basiques dans un cadre 100% légal et contrôlé.
+![License](https://img.shields.io/badge/licence-MIT-blue.svg)
+![Usage](https://img.shields.io/badge/usage-%C3%A9ducatif%20%26%20l%C3%A9gal-brightgreen.svg)
+![Shell](https://img.shields.io/badge/shell-bash-informational.svg)
 
----
+Guide complet pour installer **Nmap** sur un VPS Linux et effectuer des tests de
+vulnérabilités basiques, dans un cadre **100 % légal et contrôlé**.
 
-## ⚠️ Avertissement légal
-
-- Ce tutoriel est strictement destiné à un usage éthique et légal.
-- Scanner uniquement des serveurs que vous possédez ou pour lesquels vous avez une autorisation explicite.
-- Toute utilisation abusive engage votre responsabilité pénale.
-
----
+> ⚠️ **Avertissement légal**
+>
+> - Ce tutoriel est strictement destiné à un usage éthique et légal.
+> - Ne scannez que des serveurs que vous possédez ou pour lesquels vous avez une
+>   autorisation **explicite et écrite**.
+> - Toute utilisation abusive engage votre seule et entière responsabilité, y
+>   compris pénale.
 
 ## 📋 Sommaire
 
-1. Pré-requis VPS  
-2. Installation de Nmap  
-3. Commandes de scans basiques  
-4. Identification des vulnérabilités simples  
-5. Bonnes pratiques  
-6. Nettoyage et sécurité  
-7. Ressources complémentaires  
+1. [Pré-requis VPS](#1-pré-requis-vps)
+2. [Installation de Nmap](#2-installation-de-nmap)
+3. [Commandes de scan basiques](#3-commandes-de-scan-basiques)
+4. [Identification des vulnérabilités simples](#4-identification-des-vulnérabilités-simples)
+5. [Bonnes pratiques](#5-bonnes-pratiques)
+6. [Nettoyage & sécurité après tests](#6-nettoyage--sécurité-après-tests)
+7. [Ressources complémentaires](#7-ressources-complémentaires)
 
 ---
 
-## 1️⃣ Pré-requis VPS
+## 1. Pré-requis VPS
 
-- Système recommandé : Ubuntu 20.04/22.04 ou Debian 10/11  
-- Accès root ou utilisateur avec droits sudo  
-- Connexion SSH active  
+- Système recommandé : Ubuntu 20.04/22.04 ou Debian 10/11
+- Accès root, ou utilisateur avec droits `sudo`
+- Connexion SSH active
 
----
+## 2. Installation de Nmap
 
-## 2️⃣ Installation de Nmap
+Connectez-vous à votre VPS via SSH, puis installez le paquet :
 
-Se connecter à votre VPS via SSH, puis lancer :
-
-sudo apt update  
+```bash
+sudo apt update
 sudo apt install -y nmap
+```
 
-Vérifier l’installation :
+Vérifiez l'installation :
 
+```bash
 nmap --version
+```
 
----
+## 3. Commandes de scan basiques
 
-## 3️⃣ Commandes de scans basiques
+**Détecter les ports ouverts sur une IP ou un domaine**
 
-### Scanner une IP ou un domaine pour détecter les ports ouverts
-
+```bash
 nmap 192.168.1.10
-
-ou
-
 nmap example.com
+```
 
-### Scan complet des ports TCP (1-65535)
+**Scan complet des ports TCP (1-65535)**
 
+```bash
 nmap -p- 192.168.1.10
+```
 
-### Scan avec détection des versions des services
+**Scan avec détection des versions de service**
 
+```bash
 nmap -sV 192.168.1.10
+```
 
-### Scan agressif (plus complet, avec détection OS)
+**Scan agressif (plus complet, avec détection de l'OS)**
 
+```bash
 nmap -A 192.168.1.10
+```
 
----
+## 4. Identification des vulnérabilités simples
 
-## 4️⃣ Identification des vulnérabilités simples
+Nmap permet aussi de lancer des scripts NSE (*Nmap Scripting Engine*) pour
+repérer certaines vulnérabilités connues.
 
-Nmap permet aussi de lancer des scripts NSE (Nmap Scripting Engine) pour détecter vulnérabilités :
+**Scripts de vulnérabilités de base**
 
-### Scanner avec scripts vulnérabilités basiques
-
+```bash
 nmap --script vuln 192.168.1.10
+```
 
-### Scanner pour trouver des failles SSH courantes
+**Recherche de failles SSH courantes**
 
+```bash
 nmap --script ssh-auth-methods,sshv1 192.168.1.10
+```
 
----
+## 5. Bonnes pratiques
 
-## 5️⃣ Bonnes pratiques
+- Ne scannez que vos propres machines, ou celles pour lesquelles vous avez une
+  autorisation écrite.
+- Commencez par un scan simple, puis augmentez la complexité progressivement.
+- Analysez les résultats en détail et vérifiez les services exposés.
+- Ne lancez pas de scans agressifs sur des serveurs en production sans
+  validation préalable.
+- Réservez les outils complémentaires (Wireshark, Metasploit…) à un
+  environnement de lab isolé.
 
-- Toujours scanner uniquement vos machines ou celles pour lesquelles vous avez l’autorisation  
-- Commencer par un scan simple, augmenter la complexité progressivement  
-- Analyser les résultats en détail, vérifier les services exposés  
-- Ne pas lancer de scans agressifs sur des serveurs en production sans validation  
-- Utiliser des outils complémentaires (Wireshark, Metasploit) uniquement dans un lab  
+## 6. Nettoyage & sécurité après tests
 
----
+- Fermez les services non nécessaires.
+- Mettez à jour le système et les logiciels.
+- Configurez un pare-feu (UFW, nftables) pour limiter les accès.
+- Surveillez les logs pour détecter les accès suspects.
 
-## 6️⃣ Nettoyage & sécurité après tests
+## 7. Ressources complémentaires
 
-- Fermer les services non nécessaires  
-- Mettre à jour le système et les logiciels  
-- Configurer un firewall (UFW, nftables) pour limiter les accès  
-- Surveiller les logs pour détecter des accès suspects  
-
----
-
-## 7️⃣ Ressources complémentaires
-
-- https://nmap.org/book/man.html  
-- https://nmap.org/book/nse.html  
-- https://linuxsecurity.expert/tutorials/  
+- [Nmap Reference Guide](https://nmap.org/book/man.html)
+- [NSE — Nmap Scripting Engine](https://nmap.org/book/nse.html)
+- [linuxsecurity.expert — tutoriels](https://linuxsecurity.expert/tutorials/)
 
 ---
 
 ## 📢 Disclaimer
 
-Ce projet est à but éducatif uniquement.  
-L’auteur ne peut être tenu responsable en cas d’usage illégal.  
+Ce projet est fourni à but **éducatif uniquement**. L'auteur ne peut être tenu
+responsable en cas d'usage illégal ou non autorisé de ce tutoriel.
+
+## 📄 Licence
+
+Distribué sous licence [MIT](LICENSE) — libre à vous d'adapter et de partager
+ce tutoriel dans un cadre légal.
 
 ---
 
-## Licence
-
-MIT License - Libre à vous d’adapter et partager ce tutoriel dans un cadre légal.
-
----
-
-Bonne exploration sécurisée ! 🔐
+<p align="center">Bonne exploration sécurisée ! 🔐</p>
